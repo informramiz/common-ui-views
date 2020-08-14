@@ -9,7 +9,12 @@ import github.informramiz.commonuiviews.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private val items = mutableListOf("Item1", "Item2", "Item3", "Item4", "Item5", "Item6")
+    private val items = mutableListOf<String>().apply {
+        for (i in 1..20) {
+            add("Item$i")
+        }
+    }
+
     private val simpleAdapter = SimpleAdapter()
     private val viewBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(
@@ -20,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+
+        supportActionBar?.hide()
 
         cardsContainer.adapter = simpleAdapter
         cardsContainer.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))

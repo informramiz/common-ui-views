@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<github.informramiz.commonuiviews.appbar.CollapsingToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/motion_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="?attr/actionBarSize"
+    android:fitsSystemWindows="false"
+    app:layout_scrollFlags="enterAlways|scroll|exitUntilCollapsed|snap"
+    app:layoutDescription="@xml/appbar_layout_motion">
+
+    <View
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/titleTextViewLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Good Morning"
+        android:textSize="32sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/titleTextViewSmall"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:alpha="1"-->
+<!--        android:textColor="@android:color/black"-->
+<!--        android:text="Good Morning"-->
+<!--        android:textSize="15sp" />-->
+
+</github.informramiz.commonuiviews.appbar.CollapsingToolbar>
