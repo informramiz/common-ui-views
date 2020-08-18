@@ -3,4 +3,5 @@
     <string name="dashboard">Dashboard</string>
     <string name="eco">Eco</string>
     <string name="favorite">Favorite</string>
+    <string name="custom_bottombar_hide_on_scroll_behavior" translatable="false">github.informramiz.commonuiviews.bottombar.HideOnScrollBehavior</string>
 </resources>
