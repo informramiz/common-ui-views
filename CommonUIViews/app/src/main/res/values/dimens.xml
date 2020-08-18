@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="bottom_nav_top_option_width">120dp</dimen>
+    <dimen name="bottom_nav_top_options_top_margin">8dp</dimen>
+    <dimen name="bottom_nav_top_options_bottom_margin">16dp</dimen>
+    <dimen name="bottom_nav_bottom_margin">8dp</dimen>
+    <dimen name="bottom_nav_top_option_padding">8dp</dimen>
+</resources>
