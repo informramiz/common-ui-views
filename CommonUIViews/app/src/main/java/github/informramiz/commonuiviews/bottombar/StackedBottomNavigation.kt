@@ -1,9 +1,11 @@
 package github.informramiz.commonuiviews.bottombar
 
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.*
 import android.widget.TextView
+import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -11,8 +13,12 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.ui.NavigationUI
 import github.informramiz.commonuiviews.R
 import github.informramiz.commonuiviews.databinding.ViewStackedBottomNavigationBinding
+import java.lang.ref.WeakReference
 
 
 /**
@@ -21,7 +27,17 @@ import github.informramiz.commonuiviews.databinding.ViewStackedBottomNavigationB
 class StackedBottomNavigation @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr), View.OnClickListener {
-    var onItemClickListener: ((itemId: Int) -> Unit)? = null
+    var onItemClickListener: ((itemId: MenuItem) -> Unit)? = null
+    val menuItems: List<MenuItem>
+        get() {
+            return menu.children.flatMap {
+                if (it.hasSubMenu()) {
+                    sequenceOf(it) + it.subMenu.children
+                } else {
+                    emptySequence()
+                }
+            }.toList()
+        }
 
     private val viewBinding =
         ViewStackedBottomNavigationBinding.inflate(LayoutInflater.from(context), this)
@@ -57,7 +73,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
             val completeMenuItem = menu.findItem(menuItem.itemId)
             addNestedOptionsForMenu(completeMenuItem)
             if (!completeMenuItem.hasSubMenu()) {
-                onItemClickListener?.invoke(menuItem.itemId)
+                onItemClickListener?.invoke(menuItem)
             }
             true
         }
@@ -136,7 +152,8 @@ class StackedBottomNavigation @JvmOverloads constructor(
     override fun onClick(view: View) {
         clearSelection()
         view.isSelected = true
-        onItemClickListener?.invoke(view.tag as Int)
+        val menuId = view.tag as Int
+        onItemClickListener?.invoke(menuItems.first { it.itemId == menuId })
     }
 
     private fun clearSelection() {
@@ -144,4 +161,38 @@ class StackedBottomNavigation @JvmOverloads constructor(
             findViewById<TextView>(id).isSelected = false
         }
     }
+}
+
+fun StackedBottomNavigation.setupWithNavController(navController: NavController) {
+    this.onItemClickListener = { menuItem ->
+        NavigationUI.onNavDestinationSelected(menuItem, navController)
+    }
+
+    val navigationViewWeakReference = WeakReference(this)
+    val navigationChangeListener = object : NavController.OnDestinationChangedListener  {
+        override fun onDestinationChanged(
+            controller: NavController,
+            destination: NavDestination,
+            arguments: Bundle?
+        ) {
+            val bottomNavView = navigationViewWeakReference.get()
+            if (bottomNavView == null) {
+                navController.removeOnDestinationChangedListener(this)
+                return
+            }
+
+            menuItems.forEach { menuItem ->
+                menuItem.isChecked = matchDestination(destination, menuItem.itemId)
+            }
+        }
+    }
+    navController.addOnDestinationChangedListener(navigationChangeListener)
+}
+
+fun matchDestination(destination: NavDestination, @IdRes destId: Int): Boolean {
+    var currentDestination: NavDestination? = destination
+    while (currentDestination!!.id != destId && currentDestination.parent != null) {
+        currentDestination = currentDestination.parent
+    }
+    return currentDestination.id == destId
 }

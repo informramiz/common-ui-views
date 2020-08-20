@@ -3,6 +3,7 @@ package github.informramiz.commonuiviews
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.DividerItemDecoration
 import github.informramiz.circleimageview.SimpleAdapter
 import github.informramiz.commonuiviews.cardscontainer.InteractableRecyclerView
@@ -38,7 +39,10 @@ class MainActivity : AppCompatActivity() {
         )
         simpleAdapter.submitList(items)
         registerListeners()
+
     }
+
+
 
     private fun registerListeners() {
         cardsContainer.onInteractionListener = object : InteractableRecyclerView.OnChangeListener {
@@ -56,8 +60,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        viewBinding.stackBottomNavigation.onItemClickListener = { itemId ->
-            val backgroundColorRes = if (itemId == R.id.action_topology) {
+        viewBinding.stackBottomNavigation.onItemClickListener = { menuItem ->
+            val backgroundColorRes = if (menuItem.itemId == R.id.action_topology) {
                 android.R.color.transparent
             } else {
                 R.color.bottom_nav_background_color
