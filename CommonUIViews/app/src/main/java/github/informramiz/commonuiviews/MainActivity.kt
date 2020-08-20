@@ -2,6 +2,7 @@ package github.informramiz.commonuiviews
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import github.informramiz.circleimageview.SimpleAdapter
 import github.informramiz.commonuiviews.cardscontainer.InteractableRecyclerView
@@ -48,6 +49,10 @@ class MainActivity : AppCompatActivity() {
                 items.removeAt(position)
                 simpleAdapter.notifyItemRemoved(position)
             }
+        }
+
+        viewBinding.stackBottomNavigation.onItemClickListener = { itemId ->
+            Toast.makeText(this, "Item id: ${itemId}", Toast.LENGTH_SHORT).show()
         }
     }
 }

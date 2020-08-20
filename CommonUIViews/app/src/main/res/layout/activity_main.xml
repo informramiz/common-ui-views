@@ -29,6 +29,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <github.informramiz.commonuiviews.bottombar.StackedBottomNavigation
+        android:id="@+id/stackBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
