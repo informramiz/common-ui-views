@@ -26,7 +26,7 @@
     </item>
 
     <item
-        android:id="@+id/shield"
+        android:id="@+id/action_shield"
         android:enabled="true"
         android:icon="@drawable/shield_icon_selector"
         android:title="@string/action_shield_label">
@@ -41,7 +41,7 @@
     </item>
 
     <item
-        android:id="@+id/topology"
+        android:id="@+id/action_topology"
         android:enabled="true"
         android:icon="@drawable/topology"
         android:title="@string/action_topology_label" />

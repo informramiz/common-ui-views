@@ -52,7 +52,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewBinding.stackBottomNavigation.onItemClickListener = { itemId ->
-//            Toast.makeText(this, "Item id: ${itemId}", Toast.LENGTH_SHORT).show()
+           val backgroundColorRes = if (itemId == R.id.action_topology) {
+               android.R.color.transparent
+           } else {
+               R.color.bottom_nav_background_color
+           }
+            viewBinding.stackBottomNavigation.setBackgroundResource(backgroundColorRes)
         }
     }
 }

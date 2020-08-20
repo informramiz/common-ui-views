@@ -31,7 +31,6 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private var menuResId: Int = -1
 
     init {
-        setBackgroundResource(R.color.bottom_nav_background_color)
         extractAttributes(context, attrs)
         loadMenuOptions()
         registerListeners()

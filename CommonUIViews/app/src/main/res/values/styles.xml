@@ -10,11 +10,10 @@
     <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
         <item name="labelVisibilityMode">unlabeled</item>
-
     </style>
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-        <item name="colorSurface">@color/bottom_nav_background_color</item>
+        <item name="colorSurface">@android:color/transparent</item>
         <item name="colorOnSurface">@color/bottom_nav_chip_option_selected_item_color</item>
         <item name="colorPrimary">@color/bottom_nav_chip_option_selected_item_color</item>
     </style>

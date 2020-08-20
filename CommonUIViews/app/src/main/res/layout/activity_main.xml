@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="@color/bottom_nav_background_color"
         app:menu="@menu/bottom_menu"
         app:layout_behavior="@string/custom_bottombar_hide_on_scroll_behavior"/>
 
