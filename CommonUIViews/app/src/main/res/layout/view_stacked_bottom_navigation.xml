@@ -2,8 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:layout_behavior="@string/custom_bottombar_hide_on_scroll_behavior">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flow_top_items"

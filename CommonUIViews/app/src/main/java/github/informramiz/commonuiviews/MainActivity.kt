@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewBinding.stackBottomNavigation.onItemClickListener = { itemId ->
-            Toast.makeText(this, "Item id: ${itemId}", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Item id: ${itemId}", Toast.LENGTH_SHORT).show()
         }
     }
 }
