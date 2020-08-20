@@ -30,7 +30,12 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         cardsContainer.adapter = simpleAdapter
-        cardsContainer.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        cardsContainer.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         simpleAdapter.submitList(items)
         registerListeners()
     }
@@ -52,11 +57,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewBinding.stackBottomNavigation.onItemClickListener = { itemId ->
-           val backgroundColorRes = if (itemId == R.id.action_topology) {
-               android.R.color.transparent
-           } else {
-               R.color.bottom_nav_background_color
-           }
+            val backgroundColorRes = if (itemId == R.id.action_topology) {
+                android.R.color.transparent
+            } else {
+                R.color.bottom_nav_background_color
+            }
             viewBinding.stackBottomNavigation.setBackgroundResource(backgroundColorRes)
         }
     }
