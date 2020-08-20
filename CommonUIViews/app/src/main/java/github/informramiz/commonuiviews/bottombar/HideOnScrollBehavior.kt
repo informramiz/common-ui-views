@@ -3,6 +3,7 @@ package github.informramiz.commonuiviews.bottombar
 import android.animation.TimeInterpolator
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
 import android.view.ViewPropertyAnimator
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -28,8 +29,15 @@ class HideOnScrollBehavior<V : View> @JvmOverloads constructor(
     private var currentAnimator: ViewPropertyAnimator? = null
 
     override fun onLayoutChild(parent: CoordinatorLayout, child: V, layoutDirection: Int): Boolean {
-        heightToScroll = (child.measuredHeight + child.marginBottom) / 2f
+        heightToScroll = if (isHeightAboveRequirement(child)) child.measuredHeight / 2f else 0f
         return super.onLayoutChild(parent, child, layoutDirection)
+    }
+
+    private fun isHeightAboveRequirement(child: V) =
+        child.measuredHeight >= minimumHeightToScroll(child.context)
+
+    private fun minimumHeightToScroll(context: Context): Float {
+        return 80f.toPx(context)
     }
 
     override fun onStartNestedScroll(
@@ -92,6 +100,10 @@ class HideOnScrollBehavior<V : View> @JvmOverloads constructor(
 
         currentScrollState = ScrollState.SCROLLED_DOWN
         animateChildTo(child, heightToScroll, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
+    }
+
+    private fun Float.toPx(context: Context): Float {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, context.resources.displayMetrics)
     }
 
     private enum class ScrollState {

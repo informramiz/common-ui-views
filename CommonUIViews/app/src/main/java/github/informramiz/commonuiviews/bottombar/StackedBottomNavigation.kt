@@ -9,6 +9,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import github.informramiz.commonuiviews.R
 import github.informramiz.commonuiviews.databinding.ViewStackedBottomNavigationBinding
