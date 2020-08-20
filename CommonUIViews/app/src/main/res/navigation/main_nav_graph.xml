@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="github.informramiz.commonuiviews.main.home.HomeFragment"
+        android:label="home_fragment"
+        tools:layout="@layout/home_fragment" />
+    <fragment
+        android:id="@+id/digitalSecurityFragment"
+        android:name="github.informramiz.commonuiviews.main.security.digitalsecurity.DigitalSecurityFragment"
+        android:label="digital_security_fragment"
+        tools:layout="@layout/digital_security_fragment" />
+    <fragment
+        android:id="@+id/employeeZoneFragment"
+        android:name="github.informramiz.commonuiviews.main.devices.employeezone.EmployeeZoneFragment"
+        android:label="employee_zone_fragment"
+        tools:layout="@layout/employee_zone_fragment" />
+    <fragment
+        android:id="@+id/guestZoneFragment"
+        android:name="github.informramiz.commonuiviews.main.devices.guestzone.GuestZoneFragment"
+        android:label="guest_zone_fragment"
+        tools:layout="@layout/guest_zone_fragment" />
+    <fragment
+        android:id="@+id/motionFragment"
+        android:name="github.informramiz.commonuiviews.main.security.motion.MotionFragment"
+        android:label="motion_fragment"
+        tools:layout="@layout/motion_fragment" />
+    <fragment
+        android:id="@+id/secureZoneFragment"
+        android:name="github.informramiz.commonuiviews.main.devices.securezone.SecureZoneFragment"
+        android:label="secure_zone_fragment"
+        tools:layout="@layout/secure_zone_fragment" />
+    <fragment
+        android:id="@+id/topologyFragment"
+        android:name="github.informramiz.commonuiviews.main.topology.TopologyFragment"
+        android:label="topology_fragment"
+        tools:layout="@layout/topology_fragment" />
+</navigation>
