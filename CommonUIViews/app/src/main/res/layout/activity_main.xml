@@ -35,6 +35,7 @@
         android:layout_gravity="bottom"
         android:background="@color/bottom_nav_background_color"
         app:menu="@menu/bottom_menu"
+        android:animateLayoutChanges="true"
         app:layout_behavior="@string/custom_bottombar_hide_on_scroll_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
