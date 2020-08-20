@@ -5,9 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".main.devices.securezone.SecureZoneFragment">
 
-    <TextView
+    <include layout="@layout/chip_layout" />
+
+    <github.informramiz.commonuiviews.cardscontainer.InteractableRecyclerView
+        android:id="@+id/cardsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Secure Zone" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
