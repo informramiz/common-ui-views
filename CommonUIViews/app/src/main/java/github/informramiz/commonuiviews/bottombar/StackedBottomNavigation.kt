@@ -69,7 +69,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     private fun addNestedOptionsForMenu(mainMenu: MenuItem) {
-        clearExistingNestedOptions()
+        viewBinding.flowTopItems.isVisible = mainMenu.hasSubMenu()
         if (!mainMenu.hasSubMenu()) return
         addNestedOptions(mainMenu.subMenu.children.toList())
     }
@@ -86,6 +86,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     private fun addNestedOptions(options: List<MenuItem>) {
+        clearExistingNestedOptions()
         val viewIds = IntArray(options.size)
         options.forEachIndexed { index, option ->
             val viewId = addNestedOption(option)
