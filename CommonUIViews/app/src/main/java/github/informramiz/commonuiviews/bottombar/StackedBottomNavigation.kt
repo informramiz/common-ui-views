@@ -27,20 +27,42 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private var menuResId: Int = -1
     init {
         setBackgroundResource(R.color.bottom_nav_background_color)
+        extractAttributes(context, attrs)
+        loadMenuOptions()
+        registerListeners()
+    }
+
+    private fun extractAttributes(context: Context, attrs: AttributeSet?) {
         context.withStyledAttributes(attrs, R.styleable.StackedBottomNavigation) {
             menuResId = getResourceId(R.styleable.StackedBottomNavigation_menu, menuResId)
             if (menuResId == -1) {
                 throw IllegalArgumentException("menu resource must be provided")
             }
         }
+    }
+
+    private fun loadMenuOptions() {
         menuInflater.inflate(menuResId, menu)
         addMainOptions()
-        registerListeners()
-        addSampleOptions()
+        val first = menu.children.first()
+        addNestedOptionsForMenu(first)
+    }
+
+    private fun registerListeners() {
+        viewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            addNestedOptionsForMenu(menu.findItem(menuItem.itemId))
+            true
+        }
     }
 
     private fun addMainOptions() {
         menu.children.forEach { addOptionToBottomNavigationView(it) }
+    }
+
+    private fun addNestedOptionsForMenu(mainMenu: MenuItem) {
+        clearExistingNestedOptions()
+        if (!mainMenu.hasSubMenu()) return
+        addNestedOptions(mainMenu.subMenu.children.toList())
     }
 
     private fun addOptionToBottomNavigationView(first: MenuItem) {
@@ -54,18 +76,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
         }
     }
 
-    private fun addSampleOptions() {
-        addNestedOptions(listOf("Secure Zone", "Employee Zone", "Guest Zone"))
-    }
-
-    private fun registerListeners() {
-        viewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            true
-        }
-    }
-
-    private fun addNestedOptions(options: List<String>) {
-        clearExistingNestedOptions()
+    private fun addNestedOptions(options: List<MenuItem>) {
         val viewIds = IntArray(options.size)
         options.forEachIndexed { index, option ->
             val viewId = addNestedOption(option)
@@ -83,14 +94,15 @@ class StackedBottomNavigation @JvmOverloads constructor(
         }
     }
 
-    private fun addNestedOption(optionText: String): Int {
+    private fun addNestedOption(option: MenuItem): Int {
         val textView = TextView(context).apply {
             layoutParams =
                 LayoutParams(
                     context.resources.getDimensionPixelSize(R.dimen.bottom_nav_top_option_width),
                     LayoutParams.WRAP_CONTENT
                 )
-            text = optionText
+            text = option.title
+            tag = option.itemId
             id = View.generateViewId()
             gravity = Gravity.CENTER
             isClickable = true

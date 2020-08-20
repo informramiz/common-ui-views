@@ -4,4 +4,13 @@
     <string name="eco">Eco</string>
     <string name="favorite">Favorite</string>
     <string name="custom_bottombar_hide_on_scroll_behavior" translatable="false">github.informramiz.commonuiviews.bottombar.HideOnScrollBehavior</string>
+    <string name="action_home_label">Home</string>
+    <string name="action_devices_label">Devices</string>
+    <string name="action_secure_zone_label">Secure Zone</string>
+    <string name="action_employee_zone_label">Employee Zone</string>
+    <string name="action_guest_zone_label">Guest Zone</string>
+    <string name="action_shield_label">Shield</string>
+    <string name="action_digital_security_label">Digital Security</string>
+    <string name="action_motion_label">Motion</string>
+    <string name="action_topology_label">Topology</string>
 </resources>

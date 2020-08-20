@@ -2,35 +2,47 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/home"
-        android:title="Home"
+        android:id="@+id/action_home"
+        android:enabled="true"
         android:icon="@drawable/home_icon_selector"
-        android:enabled="true"/>
+        android:title="@string/action_home_label" />
 
     <item
-        android:id="@+id/devices"
-        android:title="Devices"
+        android:id="@+id/action_devices"
+        android:enabled="true"
         android:icon="@drawable/devices_icon_selector"
-        android:enabled="true" />
+        android:title="@string/action_devices_label">
+        <menu>
+            <item
+                android:id="@+id/action_secure_zone"
+                android:title="@string/action_secure_zone_label" />
+            <item
+                android:id="@+id/action_employee_zone"
+                android:title="@string/action_employee_zone_label" />
+            <item
+                android:id="@+id/action_guest_zone"
+                android:title="@string/action_guest_zone_label" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/shield"
-        android:title="Shield"
+        android:enabled="true"
         android:icon="@drawable/shield_icon_selector"
-        android:enabled="true">
-
+        android:title="@string/action_shield_label">
         <menu>
             <item
-                android:id="@+id/shield1"
-                android:title="Shield1"
-                android:icon="@drawable/shield_icon_selector"
-                android:enabled="true"/>
+                android:id="@+id/action_digital_security"
+                android:title="@string/action_digital_security_label" />
+            <item
+                android:id="@+id/action_motion"
+                android:title="@string/action_motion_label" />
         </menu>
     </item>
 
     <item
         android:id="@+id/topology"
-        android:title="Topology"
+        android:enabled="true"
         android:icon="@drawable/topology"
-        android:enabled="true"/>
+        android:title="@string/action_topology_label" />
 </menu>
