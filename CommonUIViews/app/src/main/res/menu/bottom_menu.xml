@@ -17,7 +17,16 @@
         android:id="@+id/shield"
         android:title="Shield"
         android:icon="@drawable/shield_icon_selector"
-        android:enabled="true"/>
+        android:enabled="true">
+
+        <menu>
+            <item
+                android:id="@+id/shield1"
+                android:title="Shield1"
+                android:icon="@drawable/shield_icon_selector"
+                android:enabled="true"/>
+        </menu>
+    </item>
 
     <item
         android:id="@+id/topology"
