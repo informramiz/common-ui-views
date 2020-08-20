@@ -8,7 +8,8 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:layout_height="150dp"
+        android:visibility="gone">
         <include layout="@layout/collapsing_toolbar"/>
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.core.widget.NestedScrollView

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_home"
+        android:id="@+id/homeFragment"
         android:enabled="true"
         android:icon="@drawable/home_icon_selector"
         android:title="@string/action_home_label" />
@@ -14,13 +14,13 @@
         android:title="@string/action_devices_label">
         <menu>
             <item
-                android:id="@+id/action_secure_zone"
+                android:id="@+id/secureZoneFragment"
                 android:title="@string/action_secure_zone_label" />
             <item
-                android:id="@+id/action_employee_zone"
+                android:id="@+id/employeeZoneFragment"
                 android:title="@string/action_employee_zone_label" />
             <item
-                android:id="@+id/action_guest_zone"
+                android:id="@+id/guestZoneFragment"
                 android:title="@string/action_guest_zone_label" />
         </menu>
     </item>
@@ -32,16 +32,16 @@
         android:title="@string/action_shield_label">
         <menu>
             <item
-                android:id="@+id/action_digital_security"
+                android:id="@+id/digitalSecurityFragment"
                 android:title="@string/action_digital_security_label" />
             <item
-                android:id="@+id/action_motion"
+                android:id="@+id/motionFragment"
                 android:title="@string/action_motion_label" />
         </menu>
     </item>
 
     <item
-        android:id="@+id/action_topology"
+        android:id="@+id/topologyFragment"
         android:enabled="true"
         android:icon="@drawable/topology"
         android:title="@string/action_topology_label" />
