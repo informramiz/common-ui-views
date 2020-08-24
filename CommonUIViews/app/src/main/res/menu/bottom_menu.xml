@@ -4,7 +4,7 @@
     <item
         android:id="@+id/homeFragment"
         android:enabled="true"
-        android:icon="@drawable/home_icon_selector"
+        android:icon="@drawable/dashboard_icon_selector"
         android:title="@string/action_home_label" />
 
     <item
@@ -28,7 +28,7 @@
     <item
         android:id="@+id/action_shield"
         android:enabled="true"
-        android:icon="@drawable/shield_icon_selector"
+        android:icon="@drawable/security_icon_selector"
         android:title="@string/action_shield_label">
         <menu>
             <item
@@ -43,6 +43,6 @@
     <item
         android:id="@+id/topologyFragment"
         android:enabled="true"
-        android:icon="@drawable/topology"
+        android:icon="@drawable/network_icon_selector"
         android:title="@string/action_topology_label" />
 </menu>
