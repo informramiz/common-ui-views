@@ -10,6 +10,7 @@
     <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
         <item name="labelVisibilityMode">unlabeled</item>
+        <item name="itemIconSize">44dp</item>
     </style>
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
