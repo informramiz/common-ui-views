@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         ))
         setupActionBarWithNavController(navController, appBarConfiguration)
         viewBinding.stackBottomNavigation.setupWithNavController(navController)
+        viewBinding.stackBottomNavigation.selectedItemId = R.id.employeeZoneFragment
     }
 
     private fun registerListeners() {
