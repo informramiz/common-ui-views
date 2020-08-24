@@ -36,11 +36,18 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     var onItemClickListener: ((itemId: MenuItem) -> Unit)? = null
+    private var isSelectedItemIdUpdating = false
     var selectedItemId: Int = NO_MENU_OPTION_ID
         set(value) {
-            if (value == field) return // ignore double updates
+            if (value == field || isSelectedItemIdUpdating) return // ignore double updates
+
+            //lock the updates of this ID as this chang may require changing the BottomNavigationView
+            // and changing BottomNavigationView can trigger its listeners and in turn update
+            // this ID which we don't want
+            isSelectedItemIdUpdating = true
             field = value
             onSelectedItemUpdated()
+            isSelectedItemIdUpdating = false
         }
 
     val menuItems: List<MenuItem>
