@@ -2,6 +2,9 @@ package github.informramiz.commonuiviews.bottombar
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcel
+import android.os.Parcelable
+import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
 import android.view.*
 import android.widget.TextView
@@ -13,6 +16,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.customview.view.AbsSavedState
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.ui.NavigationUI
@@ -65,17 +69,17 @@ class StackedBottomNavigation @JvmOverloads constructor(
         selectedItemId = menu.children.first().itemId
     }
 
-    private fun notifyListeners() {
-        if (selectedItemId == NO_MENU_OPTION_ID) return
-        onItemClickListener?.invoke(menuItems.first { it.itemId == selectedItemId })
-    }
-
     private fun onSelectedItemUpdated() {
         if (selectedItemId == NO_MENU_OPTION_ID) return
         notifyListeners()
         if (!uiUpdatesLocked) {
             selectMenuItem(selectedItemId)
         }
+    }
+
+    private fun notifyListeners() {
+        if (selectedItemId == NO_MENU_OPTION_ID) return
+        onItemClickListener?.invoke(menuItems.first { it.itemId == selectedItemId })
     }
 
     private fun extractAttributes(context: Context, attrs: AttributeSet?) {
@@ -91,7 +95,6 @@ class StackedBottomNavigation @JvmOverloads constructor(
         menu.children.firstOrNull()?.isChecked = true
         menuInflater.inflate(menuResId, menu)
         addMainOptions()
-        selectedItemId = menu.children.first().itemId
     }
 
     private fun addMainOptions() {
@@ -228,6 +231,53 @@ class StackedBottomNavigation @JvmOverloads constructor(
         uiUpdatesLocked = true
         block()
         uiUpdatesLocked = false
+    }
+
+    override fun onSaveInstanceState(): Parcelable? {
+        val superState = super.onSaveInstanceState()
+        val savedState = SavedState(superState)
+        savedState.selectedItemId = selectedItemId
+        return savedState
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state !is SavedState) {
+            super.onRestoreInstanceState(state)
+            return
+        }
+
+        super.onRestoreInstanceState(state.superState)
+        selectedItemId = state.selectedItemId
+    }
+
+    private class SavedState : BaseSavedState {
+        var selectedItemId: Int = StackedBottomNavigation.NO_MENU_OPTION_ID
+
+        constructor(source: Parcel): super(source) {
+            selectedItemId = source.readInt()
+        }
+
+        constructor(parcelable: Parcelable?): super(parcelable)
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            super.writeToParcel(parcel, flags)
+            parcel.writeInt(selectedItemId)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<SavedState> {
+            override fun createFromParcel(parcel: Parcel): SavedState {
+                return SavedState(parcel)
+            }
+
+            override fun newArray(size: Int): Array<SavedState?> {
+                return arrayOfNulls(size)
+            }
+        }
+
     }
 }
 
