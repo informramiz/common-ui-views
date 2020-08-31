@@ -155,6 +155,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
         viewBinding.flowTopItems.referencedIds.forEach { id ->
             removeView(findViewById(id))
         }
+        viewBinding.flowTopItems.referencedIds = intArrayOf()
     }
 
     private fun addNestedOption(option: MenuItem): Int {
