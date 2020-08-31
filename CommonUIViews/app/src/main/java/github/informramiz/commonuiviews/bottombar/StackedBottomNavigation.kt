@@ -104,7 +104,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     private fun updateMenuOptions(menuItem: MenuItem) {
-        val completeMenuItem = menuItemsController.findMainMenuItem(menuItem.itemId)
+        val completeMenuItem = menuItemsController.findMainMenuItem(menuItem.itemId) ?: return
         selectedItemId = if (!completeMenuItem.hasSubMenu()) {
             clearExistingNestedOptions()
             completeMenuItem.itemId

@@ -28,7 +28,7 @@ class MenuItemsController(val context: Context, val view: StackedBottomNavigatio
 
     fun firstMenuItem() = menu.children.firstOrNull()
 
-    fun findMainMenuItem(itemId: Int) = menu.findItem(itemId)
+    fun findMainMenuItem(itemId: Int): MenuItem? = menu.findItem(itemId)
 
     fun findPossiblyNestedMenuItem(itemId: Int): Pair<MenuItem, MenuItem?>? {
         menu.children.forEach { mainItem ->
