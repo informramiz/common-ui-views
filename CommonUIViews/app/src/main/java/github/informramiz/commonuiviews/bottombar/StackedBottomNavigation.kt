@@ -37,7 +37,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private var isSelectedItemIdUpdating = false
     var selectedItemId: Int = NO_MENU_OPTION_ID
         set(value) {
-            if (value == field || !isValidMenuItemId(value) || isSelectedItemIdUpdating) return // ignore double updates
+            if (value == field || !menuItemsController.isValidMenuItem(value) || isSelectedItemIdUpdating) return // ignore double updates
 
             //lock the updates of this ID as this chang may require changing the BottomNavigationView
             // and changing BottomNavigationView can trigger its listeners and in turn update
@@ -48,21 +48,9 @@ class StackedBottomNavigation @JvmOverloads constructor(
             isSelectedItemIdUpdating = false
         }
 
-    private val flattenedMenuItems: List<MenuItem>
-        get() {
-            return menu.children.flatMap {
-                sequenceOf(it) + if (it.hasSubMenu()) {
-                    it.subMenu.children
-                } else {
-                    emptySequence()
-                }
-            }.toList()
-        }
-
     private val viewBinding =
         ViewStackedBottomNavigationBinding.inflate(LayoutInflater.from(context), this)
-    private val menuInflater = MenuInflater(context)
-    private val menu: Menu = PopupMenu(context, this).menu
+    private val menuItemsController = MenuItemsController(context, this)
 
     @MenuRes
     private var menuResId: Int = NO_MENU_OPTION_ID
@@ -72,7 +60,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
         extractAttributes(context, attrs)
         loadMenuOptions()
         registerListeners()
-        selectedItemId = menu.children.first().itemId
+        selectedItemId = menuItemsController.firstMenuItem()?.itemId ?: NO_MENU_OPTION_ID
     }
 
     private fun onSelectedItemUpdated() {
@@ -83,11 +71,11 @@ class StackedBottomNavigation @JvmOverloads constructor(
         }
     }
 
-    private fun isValidMenuItemId(itemId: Int) = flattenedMenuItems.any { it.itemId == itemId }
-
     private fun notifyListeners() {
-        if (selectedItemId == NO_MENU_OPTION_ID) return
-        onItemClickListener?.invoke(flattenedMenuItems.first { it.itemId == selectedItemId })
+        val selectedMenuItem = menuItemsController.findMenuItem(selectedItemId)
+        if (selectedMenuItem != null) {
+            onItemClickListener?.invoke(selectedMenuItem)
+        }
     }
 
     private fun extractAttributes(context: Context, attrs: AttributeSet?) {
@@ -100,19 +88,18 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     private fun loadMenuOptions() {
-        menu.children.firstOrNull()?.isChecked = true
-        menuInflater.inflate(menuResId, menu)
+        menuItemsController.inflate(menuResId)
         addMainOptions()
     }
 
     private fun addMainOptions() {
-        menu.children.forEach { addOptionToBottomNavigationView(it) }
+        menuItemsController.mainMenuItems.forEach { addOptionToBottomNavigationView(it) }
     }
 
     private fun registerListeners() {
         viewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             performUiLockedUpdate {
-                val completeMenuItem = menu.findItem(menuItem.itemId)
+                val completeMenuItem = menuItemsController.findMainMenuItem(menuItem.itemId)
                 selectedItemId = if (!completeMenuItem.hasSubMenu()) {
                     clearExistingNestedOptions()
                     completeMenuItem.itemId
@@ -202,7 +189,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     }
 
     private fun selectMenuItem(itemId: Int) {
-        val (mainMenu, subMenu) = findMenuItem(itemId) ?: return
+        val (mainMenu, subMenu) = menuItemsController.findPossiblyNestedMenuItem(itemId) ?: return
         clearSelection()
         if (viewBinding.bottomNavigationView.selectedItemId != mainMenu.itemId) {
             viewBinding.bottomNavigationView.selectedItemId = mainMenu.itemId
@@ -217,23 +204,6 @@ class StackedBottomNavigation @JvmOverloads constructor(
             val view = findViewById<View>(id)
             view.isSelected = view.tag == menuItem.itemId
         }
-    }
-
-    private fun findMenuItem(itemId: Int): Pair<MenuItem, MenuItem?>? {
-        menu.children.forEach { mainItem ->
-            if (mainItem.itemId == itemId) {
-                return Pair(mainItem, null)
-            }
-
-            if (mainItem.hasSubMenu()) {
-                val subMenu = mainItem.subMenu.children.find { it.itemId == itemId }
-                if (subMenu != null) {
-                    return Pair(mainItem, subMenu)
-                }
-            }
-        }
-
-        return null
     }
 
     private fun performUiLockedUpdate(block: () -> Unit) {
