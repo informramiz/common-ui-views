@@ -19,6 +19,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.ui.NavigationUI
 import github.informramiz.commonuiviews.R
 import github.informramiz.commonuiviews.databinding.ViewStackedBottomNavigationBinding
+import kotlinx.android.synthetic.main.view_stacked_bottom_navigation.view.*
 import java.lang.ref.WeakReference
 
 
@@ -47,7 +48,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
             isSelectedItemIdUpdating = false
         }
 
-    val menuItems: List<MenuItem>
+    val flattenedMenuItems: List<MenuItem>
         get() {
             return menu.children.flatMap {
                 sequenceOf(it) + if (it.hasSubMenu()) {
@@ -84,7 +85,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
 
     private fun notifyListeners() {
         if (selectedItemId == NO_MENU_OPTION_ID) return
-        onItemClickListener?.invoke(menuItems.first { it.itemId == selectedItemId })
+        onItemClickListener?.invoke(flattenedMenuItems.first { it.itemId == selectedItemId })
     }
 
     private fun extractAttributes(context: Context, attrs: AttributeSet?) {
@@ -290,24 +291,26 @@ fun StackedBottomNavigation.setupWithNavController(navController: NavController)
     this.onItemClickListener = { menuItem ->
         NavigationUI.onNavDestinationSelected(menuItem, navController)
     }
+    val navigationChangeListener = NavDestinationChangedListener(this)
+    navController.addOnDestinationChangedListener(navigationChangeListener)
+}
 
-    val navigationViewWeakReference = WeakReference(this)
-    val navigationChangeListener = object : NavController.OnDestinationChangedListener {
-        override fun onDestinationChanged(
-            controller: NavController,
-            destination: NavDestination,
-            arguments: Bundle?
-        ) {
-            val bottomNavView = navigationViewWeakReference.get()
-            if (bottomNavView == null) {
-                navController.removeOnDestinationChangedListener(this)
-                return
-            }
+private class NavDestinationChangedListener(stackedBottomNavigation: StackedBottomNavigation) : NavController.OnDestinationChangedListener {
+    val navigationViewWeakReference = WeakReference(stackedBottomNavigation)
 
-            menuItems.firstOrNull { it.itemId == destination.id }?.let {
-                selectedItemId = it.itemId
-            }
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
+        val bottomNavView = navigationViewWeakReference.get()
+        if (bottomNavView == null) {
+            controller.removeOnDestinationChangedListener(this)
+            return
+        }
+
+        bottomNavView.flattenedMenuItems.firstOrNull { it.itemId == destination.id }?.let {
+            bottomNavView.selectedItemId = it.itemId
         }
     }
-    navController.addOnDestinationChangedListener(navigationChangeListener)
 }
