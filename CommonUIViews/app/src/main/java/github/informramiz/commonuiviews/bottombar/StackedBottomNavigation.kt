@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.*
 import android.widget.TextView
 import androidx.annotation.MenuRes
-import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
@@ -19,7 +18,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.ui.NavigationUI
 import github.informramiz.commonuiviews.R
 import github.informramiz.commonuiviews.databinding.ViewStackedBottomNavigationBinding
-import kotlinx.android.synthetic.main.view_stacked_bottom_navigation.view.*
 import java.lang.ref.WeakReference
 
 
@@ -210,9 +208,9 @@ class StackedBottomNavigation @JvmOverloads constructor(
         }
     }
 
-    private fun performUiLockedUpdate(block: () -> Unit) {
+    private fun performUiLockedUpdate(uiUpdate: () -> Unit) {
         uiUpdatesLocked = true
-        block()
+        uiUpdate()
         uiUpdatesLocked = false
     }
 
