@@ -37,7 +37,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private var isSelectedItemIdUpdating = false
     var selectedItemId: Int = NO_MENU_OPTION_ID
         set(value) {
-            if (value == field || isSelectedItemIdUpdating) return // ignore double updates
+            if (value == field || !isValidMenuItemId(value) || isSelectedItemIdUpdating) return // ignore double updates
 
             //lock the updates of this ID as this chang may require changing the BottomNavigationView
             // and changing BottomNavigationView can trigger its listeners and in turn update
@@ -48,7 +48,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
             isSelectedItemIdUpdating = false
         }
 
-    val flattenedMenuItems: List<MenuItem>
+    private val flattenedMenuItems: List<MenuItem>
         get() {
             return menu.children.flatMap {
                 sequenceOf(it) + if (it.hasSubMenu()) {
@@ -82,6 +82,8 @@ class StackedBottomNavigation @JvmOverloads constructor(
             selectMenuItem(selectedItemId)
         }
     }
+
+    private fun isValidMenuItemId(itemId: Int) = flattenedMenuItems.any { it.itemId == itemId }
 
     private fun notifyListeners() {
         if (selectedItemId == NO_MENU_OPTION_ID) return
@@ -292,8 +294,7 @@ fun StackedBottomNavigation.setupWithNavController(navController: NavController)
     this.onItemClickListener = { menuItem ->
         NavigationUI.onNavDestinationSelected(menuItem, navController)
     }
-    val navigationChangeListener = NavDestinationChangedListener(this)
-    navController.addOnDestinationChangedListener(navigationChangeListener)
+    navController.addOnDestinationChangedListener(NavDestinationChangedListener(this))
 }
 
 private class NavDestinationChangedListener(stackedBottomNavigation: StackedBottomNavigation) : NavController.OnDestinationChangedListener {
@@ -310,8 +311,6 @@ private class NavDestinationChangedListener(stackedBottomNavigation: StackedBott
             return
         }
 
-        bottomNavView.flattenedMenuItems.firstOrNull { it.itemId == destination.id }?.let {
-            bottomNavView.selectedItemId = it.itemId
-        }
+        bottomNavView.selectedItemId = destination.id
     }
 }
