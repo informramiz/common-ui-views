@@ -4,11 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.os.Parcelable.ClassLoaderCreator
 import android.util.AttributeSet
 import android.view.*
 import android.widget.TextView
-import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,7 +14,6 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
-import androidx.customview.view.AbsSavedState
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.ui.NavigationUI
@@ -54,7 +51,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
         get() {
             return menu.children.flatMap {
                 sequenceOf(it) + if (it.hasSubMenu()) {
-                     it.subMenu.children
+                    it.subMenu.children
                 } else {
                     emptySequence()
                 }
@@ -65,6 +62,7 @@ class StackedBottomNavigation @JvmOverloads constructor(
         ViewStackedBottomNavigationBinding.inflate(LayoutInflater.from(context), this)
     private val menuInflater = MenuInflater(context)
     private val menu: Menu = PopupMenu(context, this).menu
+
     @MenuRes
     private var menuResId: Int = NO_MENU_OPTION_ID
     private var uiUpdatesLocked = false
@@ -260,11 +258,11 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private class SavedState : BaseSavedState {
         var selectedItemId: Int = StackedBottomNavigation.NO_MENU_OPTION_ID
 
-        constructor(source: Parcel): super(source) {
+        constructor(source: Parcel) : super(source) {
             selectedItemId = source.readInt()
         }
 
-        constructor(parcelable: Parcelable?): super(parcelable)
+        constructor(parcelable: Parcelable?) : super(parcelable)
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
             super.writeToParcel(parcel, flags)
@@ -294,7 +292,7 @@ fun StackedBottomNavigation.setupWithNavController(navController: NavController)
     }
 
     val navigationViewWeakReference = WeakReference(this)
-    val navigationChangeListener = object : NavController.OnDestinationChangedListener  {
+    val navigationChangeListener = object : NavController.OnDestinationChangedListener {
         override fun onDestinationChanged(
             controller: NavController,
             destination: NavDestination,
@@ -306,20 +304,10 @@ fun StackedBottomNavigation.setupWithNavController(navController: NavController)
                 return
             }
 
-            menuItems.forEach { menuItem ->
-                if(matchDestination(destination, menuItem.itemId)) {
-                    selectedItemId = menuItem.itemId
-                }
+            menuItems.firstOrNull { it.itemId == destination.id }?.let {
+                selectedItemId = it.itemId
             }
         }
     }
     navController.addOnDestinationChangedListener(navigationChangeListener)
-}
-
-fun matchDestination(destination: NavDestination, @IdRes destId: Int): Boolean {
-    var currentDestination: NavDestination? = destination
-    while (currentDestination!!.id != destId && currentDestination.parent != null) {
-        currentDestination = currentDestination.parent
-    }
-    return currentDestination.id == destId
 }
