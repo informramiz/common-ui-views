@@ -99,16 +99,20 @@ class StackedBottomNavigation @JvmOverloads constructor(
     private fun registerListeners() {
         viewBinding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             performUiLockedUpdate {
-                val completeMenuItem = menuItemsController.findMainMenuItem(menuItem.itemId)
-                selectedItemId = if (!completeMenuItem.hasSubMenu()) {
-                    clearExistingNestedOptions()
-                    completeMenuItem.itemId
-                } else {
-                    addNestedOptionsForMenu(completeMenuItem)
-                    markFirstItemAsSelected()
-                }
+                updateMenuOptions(menuItem)
             }
             true
+        }
+    }
+
+    private fun updateMenuOptions(menuItem: MenuItem) {
+        val completeMenuItem = menuItemsController.findMainMenuItem(menuItem.itemId)
+        selectedItemId = if (!completeMenuItem.hasSubMenu()) {
+            clearExistingNestedOptions()
+            completeMenuItem.itemId
+        } else {
+            addNestedOptionsForMenu(completeMenuItem)
+            markFirstItemAsSelected()
         }
     }
 
